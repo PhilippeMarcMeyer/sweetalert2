@@ -58,41 +58,39 @@ QUnit.test('focusCancel', (assert) => {
 // is passes even runs (2nd, 4th, 6th) and fails odd runs (1st, 3rd, 5th)
 // I suspect something is wrong with the testing environment as the same
 // code passes always outside it
-// QUnit.test('previousActiveElement', (assert) => {
-//   const done = assert.async()
+QUnit.test('previousActiveElement', (assert) => {
+  const done = assert.async()
 
-//   const buttonToast = document.createElement('button')
-//   buttonToast.innerText = 'Show toast'
-//   document.body.appendChild(buttonToast)
+  const buttonToast = document.createElement('button')
+  buttonToast.innerText = 'Show toast'
+  document.body.appendChild(buttonToast)
 
-//   const buttonModal = document.createElement('button')
-//   buttonModal.innerText = 'Show modal'
-//   document.body.appendChild(buttonModal)
+  const buttonModal = document.createElement('button')
+  buttonModal.innerText = 'Show modal'
+  document.body.appendChild(buttonModal)
 
-//   buttonToast.addEventListener('click', () => {
-//     SwalWithoutAnimation({
-//       text: 'I should not touch previousActiveElement',
-//       toast: true,
-//       timer: 1,
-//       onAfterClose: () => {
-//         buttonModal.focus()
-//         buttonModal.click()
-//       }
-//     })
-//   })
+  buttonToast.addEventListener('click', () => {
+    SwalWithoutAnimation({
+      text: 'I should not touch previousActiveElement',
+      toast: true,
+      timer: 1,
+      onAfterClose: () => {
+        buttonModal.focus()
+        buttonModal.click()
+      }
+    })
+  })
 
-//   buttonModal.addEventListener('click', () => {
-//     SwalWithoutAnimation({
-//       text: 'I should trap focus inside myself and restore previousActiveElement when I\'m closed',
-//       timer: 1,
-//       onAfterClose: () => {
-//         setTimeout(() => {
-//           assert.equal(document.activeElement, buttonModal)
-//           done()
-//         }, RESTORE_FOCUS_TIMEOUT)
-//       }
-//     })
-//   })
+  buttonModal.addEventListener('click', () => {
+    SwalWithoutAnimation({
+      text: 'I should trap focus inside myself and restore previousActiveElement when I\'m closed',
+      timer: 1,
+      onAfterClose: () => {
+        assert.equal(document.activeElement, buttonModal)
+        done()
+      }
+    })
+  })
 
-//   buttonToast.click()
-// })
+  buttonToast.click()
+})
